@@ -1,0 +1,49 @@
+name: Build and Release APK
+
+on:
+  push:
+    tags:
+      - 'v*' # Roda quando um tag começando com 'v' é criado
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+          channel: 'stable'
+          
+      - name: Install dependencies
+        run: |
+          cd tera_app
+          flutter pub get
+          
+      - name: Build APK
+        run: |
+          cd tera_app
+          flutter build apk --release
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+          
+      - name: Upload APK to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: tera_app/build/app/outputs/flutter-apk/app-release.apk
+          asset_name: tera-app-release.apk
+          asset_content_type: application/vnd.android.package-archive
