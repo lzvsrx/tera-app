@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'file_explorer_screen.dart';
 import '../models/profession_data.dart';
+import '../theme.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,14 +24,14 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings, color: TeraTheme.metallicSilver),
+            icon: Icon(Icons.settings, color: TeraTheme.metallicSilver),
             onPressed: () {},
           ),
         ],
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -145,10 +146,10 @@ class HomeScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 30,
             backgroundColor: TeraTheme.neonPurple,
-            child: Icon(Icons.person, color: Colors.white, size: 30),
+            child: const Icon(Icons.person, color: Colors.white, size: 30),
           ),
           const SizedBox(width: 16),
           Column(
